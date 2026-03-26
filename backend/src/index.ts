@@ -1,11 +1,10 @@
 import { Bot } from "grammy";
 import axios from "axios";
-import * as dotenv from "dotenv";
+import config from "./config/index.js";
 
-dotenv.config();
+const { TELEGRAM_TOKEN, N8N_WEBHOOK_URL, PORT } = config;
 
-const bot = new Bot(process.env.TELEGRAM_TOKEN || "");
-const N8N_WEBHOOK_URL = process.env.N8N_WEBHOOK_URL || "";
+const bot = new Bot(TELEGRAM_TOKEN);
 
 bot.on("message", async (ctx) => {
   const text = ctx.message?.text;
