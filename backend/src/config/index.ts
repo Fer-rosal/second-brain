@@ -3,6 +3,7 @@ import 'dotenv/config';
 interface Config {
   TELEGRAM_TOKEN: string;
   N8N_WEBHOOK_URL: string;
+  N8N_TEST_WEBHOOK_URL: string;
   PORT: number;
 }
 
@@ -13,6 +14,11 @@ if (!process.env.TELEGRAM_TOKEN) {
 
 if (!process.env.N8N_WEBHOOK_URL) {
   console.error("Error: N8N_WEBHOOK_URL no está definido en el archivo .env");
+  process.exit(1);
+}
+
+if (!process.env.N8N_TEST_WEBHOOK_URL) {
+  console.error("Error: N8N_TEST_WEBHOOK_URL no está definido en el archivo .env");
   process.exit(1);
 }
 
