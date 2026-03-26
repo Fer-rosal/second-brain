@@ -1,6 +1,8 @@
 import { Bot } from "grammy";
 import axios from "axios";
 import config from "./config/index.js";
+import bot from "./bot/index.js";
+
 
 const { TELEGRAM_TOKEN, N8N_WEBHOOK_URL, PORT } = config;
 
@@ -14,30 +16,12 @@ axios.post(N8N_WEBHOOK_URL, { test: true })
     console.error("Error al activar el webhook de n8n:", error);
   });
 
-
-const bot = new Bot(TELEGRAM_TOKEN);
-
-bot.on("message", async (ctx) => {
-  const text = ctx.message?.text;
-  
-  if (!text) return;
-
+const startBot = async () => {
   try {
-    // El bot es un "puente" hacia el cerebro en n8n
-    const response = await axios.post(N8N_WEBHOOK_URL, {
-      chatId: ctx.chat.id,
-      userName: ctx.from?.first_name,
-      text: text,
-    });
-
-    if (response.data && response.data.reply) {
-      await ctx.reply(response.data.reply);
-    }
+    await bot.start();
+    console.log(`Bot iniciado en el puerto ${PORT}`);
   } catch (error) {
-    console.error("Error en el puente n8n:", error);
-    await ctx.reply("Lo siento, perdí la conexión con mi cerebro central.");
-  }
-});
+    console.error("Error al iniciar el bot:", error);
+  }}
 
-bot.start();
 console.log("🤖 Bot (TS) en marcha...");
